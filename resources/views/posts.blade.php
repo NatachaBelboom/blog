@@ -1,6 +1,5 @@
-@extends('layout')
-
-@section('main_content')
+<x-layout>
+    <x-slot name="mainContent">
         <h1>Hello World</h1>
         @foreach ($posts as $post)
             <article>
@@ -9,5 +8,15 @@
                 <p>{{ $post->excerpt }}</p>
             </article>
         @endforeach
-@endsection
+    </x-slot>
+
+
+    <x-slot name="mainTitle">
+        {{$page_title}}
+    </x-slot>
+</x-layout>
+
+
+<title>{{$page_title}}</title>
+
 
