@@ -3,12 +3,12 @@
 <head>
 
     <link rel="stylesheet" href="/app.css">
-    <title>{{ $mainTitle }}</title>
+    @yield('main_title')
 
 </head>
 
 <body>
-    {{ $mainContent }}
+    @yield('main_content')
     <a href="/">Go back</a>
 
 </body>

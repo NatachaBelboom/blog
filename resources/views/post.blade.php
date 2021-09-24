@@ -1,5 +1,6 @@
-<x-layout>
-    <x-slot name="mainContent">
+@extends('layout')
+
+@section('main_content')
         <h1>Hello World</h1>
         <article>
             <h2>{{ $post->title }}</h2>
@@ -7,10 +8,8 @@
                 {!! $post->body !!}
             </div>
         </article>
-    </x-slot>
+@endsection
 
-
-    <x-slot name="mainTitle">
-        {{$page_title}}
-    </x-slot>
-</x-layout>
+@section('main_title')
+    <title>{{$page_title}}</title>
+@endsection
