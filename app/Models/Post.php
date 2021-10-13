@@ -1,101 +1,56 @@
 <?php
 
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
+/**
+ * App\Models\Post
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string $body
+ * @property \Illuminate\Support\Carbon $published_at
+ * @property string $excerpt
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereExcerpt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property int $category_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCategoryId($value)
+ * @property-read \App\Models\Category $category
+ */
 
-
-class Post
+class Post extends Model
 {
+    use HasFactory;
 
-    public $title;
+    protected $dates = [
+        'published_at'
+    ];
 
-    public $body;
+    protected $guarded = []; //donc tout est mass-assignable et du coup on fournit toutes les clés
 
-    public $excerpt;
-
-    public $date;
-
-    public $slug;
-
-    /**
-     * @param $title
-     * @param $body
-     * @param $excerpt
-     * @param $date
-     * @param $slug
-     */
-
-    public function __construct($title, $body, $excerpt, $date, $slug)
+    public function category()
     {
-        $this->title = $title;
-        $this->body = $body;
-        $this->excerpt = $excerpt;
-        $this->date = $date;
-        $this->slug = $slug;
+        return $this->belongsTo(Category::class); //retourne une relationpublic function deployments();
     }
 
-
-    public static function find($slug)
+    public function user()  //changer user en author
     {
-
-        $posts = static::all();
-        return $posts->firstWhere('slug', $slug);
-
-        /*$path = resource_path("/posts/{$slug}.html");  //concaténation
-
-        if(!file_exists($path)){
-            throw new ModelNotFoundException(); //couldnt find the model we want
-        }
-
-        return cache()->remember("posts.{$slug}", 1200, fn() => file_get_contents($path));*/
+        return $this->belongsTo(User::class, /*'user_id' -> preciser la clé etrangère*/); //retourne une relation
     }
 
-    public static function findOrFail($slug)
-    {
-
-        $post = static::find($slug);
-
-       if(!$post){
-           throw new ModelNotFoundException();
-       }
-
-       return $post;
-    }
-
-
-    public static function all(): Collection
-    {
-        return cache()->rememberForever('posts.all', function(){
-            $files = File::files(resource_path('posts'));
-
-            $posts = collect($files)
-                ->map(function ($file){
-                    $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
-
-                    return new Post($document->title, $document->body(), $document->excerpt, $document->date, $document->slug);
-                })
-                ->sortByDesc('date');
-
-            return $posts;
-        });
-
-        /*foreach ($files as $file){
-               $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
-               $posts[] = new Post($document->title, $document->body(), $document->excerpt, $document->date, $document->slug);
-           }*/
-
-    }
 }
-
-/*$posts = File::files(resource_path("posts"));
-
-$models = array_map(function($post){
-    return $post->getContents();
-}, $posts);
-
-return $models;*/
