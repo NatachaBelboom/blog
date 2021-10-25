@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,15 +22,15 @@ class DatabaseSeeder extends Seeder
         $natacha = User::create([
            'name'=>'Natacha Belboom',
            'email'=>'natacha.belboom@hotmail.com',
-           'password'=>bcrypt('Natacha'),
-           'slug'=>'natacha-belboom',
+           'password'=>'Natacha',
+           'username'=>'natacha-belboom',
         ]);
 
         $laura = User::create([
             'name'=>'Laura Belboom',
             'email'=>'laura.belboom@hotmail.com',
-            'password'=>bcrypt('Laura'),
-            'slug'=>'laura-belboom',
+            'password'=>'Laura',
+            'username'=>'laura-belboom',
 
         ]);
 
@@ -48,6 +49,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Post::factory(100)->create();
+
+        Comment::factory(400)->create();
 
 
         /* Post::create([

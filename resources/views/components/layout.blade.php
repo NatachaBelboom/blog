@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="{{app()->getLocale()}}">
 
 <head>
 <title>Laravel From Scratch Blog</title>
@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="//unpkg.com/alpinejs" defer></script>
+
 </head>
 
 <body style="font-family: Open Sans, sans-serif">
@@ -18,9 +19,19 @@
             </a>
         </div>
 
-        <div class="mt-8 md:mt-0">
-            <a href="/" class="text-xs font-bold uppercase">Home Page</a>
 
+        <div class="mt-8 md:mt-0 flex items-center">
+            @guest()
+                <a href="/register" class="text-xs font-bold uppercase">Register</a>
+                <a href="/login" class="text-xs font-bold uppercase ml-6">Login</a>
+            @else
+                <span class="text-xs font-bold uppercase">Welcome, {{auth()->user()->username}}</span>
+
+                <form action="/logout" method="POST" class="ml-6">
+                    @csrf {{--//sache que le formulaire a été crée par lui--}}
+                    <button type="submit" class="uppercase text-xs ">Logout</button>
+                </form>
+            @endguest
             <a href="#" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
                 Subscribe for Updates
             </a>
@@ -57,5 +68,8 @@
         </div>
     </footer>
 </section>
+
+<x-flash-message />
+
 </body>
 </html>

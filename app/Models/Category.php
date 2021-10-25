@@ -29,10 +29,15 @@ class Category extends Model
 
     use HasFactory;
 
-    protected $guarded = [];
+    //relation
 
     public function posts() //dire qu'elle renvoie des posts qui appartiennent a des categories
     {
         return $this->hasMany(Post::class); //retourne une relation
+    }
+
+    public function comments()
+    {
+        return $this->hasManyThrough(Comment::class, Post::class);
     }
 }

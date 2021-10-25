@@ -47,11 +47,6 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -72,9 +67,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    //relation
+
     public function posts() //dire qu'elle renvoie des posts qui appartiennent a des categories
     {
         return $this->hasMany(Post::class); //retourne une relation
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+    //mutators
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }

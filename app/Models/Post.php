@@ -41,16 +41,51 @@ class Post extends Model
         'published_at'
     ];
 
-    protected $guarded = []; //donc tout est mass-assignable et du coup on fournit toutes les clés
+    //relations
 
     public function category()
     {
         return $this->belongsTo(Category::class); //retourne une relationpublic function deployments();
     }
 
+
     public function user()  //changer user en author
     {
         return $this->belongsTo(User::class, /*'user_id' -> preciser la clé etrangère*/); //retourne une relation
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+
+    //scope
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, fn($query, $search) =>
+            $query->where(fn($query) =>
+                $query
+                    ->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('excerpt', 'like', '%' . $search . '%')
+                    ->orWhere('body', 'like', '%' . $search . '%')
+            )
+        );
+
+        $query->when($filters['category'] ?? false, fn($query, $category) =>
+            $query->whereHas('category', fn($query) =>
+                $query->where('slug', $category)
+            )
+
+        );
+
+        $query->when($filters['user'] ?? false, fn($query, $user) =>
+            $query->whereHas('user', fn($query) =>
+                $query->where('username', $user)
+        )
+
+        );
     }
 
 }
