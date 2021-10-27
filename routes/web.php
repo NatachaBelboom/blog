@@ -3,9 +3,12 @@
 use App\Http\Controllers\SessionController;
 use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\PostCommentController;
+use \App\Http\Controllers\NewsletterController;
 use App\Models\Post;
 use \App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
+use \MailchimpMarketing\ApiClient;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +22,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 //liste de tous les posts
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 
 
-Route::get('/users/{user:slug}', function(\App\Models\User $user ){
+Route::get('/users/{user:slug}', function (\App\Models\User $user) {
     $page_title = "Tous les posts de {$user->name}";
 
     $user->load('posts.category');  //category est une relation imbriquée de post
@@ -47,4 +49,7 @@ Route::get('/login', [SessionController::class, 'create'])->middleware('guest');
 
 Route::post('/sessions', [SessionController::class, 'store'])->middleware('guest');
 
-Route::post('/posts/{post}/comments', [PostCommentController::class, 'store']);
+Route::post('/posts/{post}/comments', [PostCommentController::class, 'store'])->middleware('auth');
+
+
+Route::post('/newsletter', NewsletterController::class);
