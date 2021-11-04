@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MailchimpNewsletter;
 use App\Services\Newsletter;
 
 class NewsletterController
 {
-    public function __invoke(Newsletter $newsletter)
+    public function __invoke(Newsletter $newsletter) //instance de la class newsletter //indication du type
     {
         request()->validate(['email' => 'required|email']);
 

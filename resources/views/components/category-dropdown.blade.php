@@ -8,7 +8,7 @@
         </button>
     </x-slot>
     {{--Items--}}
-    <x-slot name="entries">
+    <x-slot name="slot">
 
         <x-dropdown-item
             href="/?{{ http_build_query(request()->except('category', 'page')) }}"

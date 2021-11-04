@@ -6,7 +6,7 @@
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="//unpkg.com/alpinejs" defer></script>
+<script defer src="{{asset('js/app.js')}}"></script>
     <style>
         html{
             scroll-behavior: smooth;
@@ -30,7 +30,21 @@
                 <a href="/register" class="text-xs font-bold uppercase">Register</a>
                 <a href="/login" class="text-xs font-bold uppercase ml-6">Login</a>
             @else
-                <span class="text-xs font-bold uppercase">Welcome, {{auth()->user()->username}}</span>
+
+                <x-dropdown>
+                    <x-slot name="trigger">
+                        <button class="text-xs font-bold uppercase">Welcome, {{auth()->user()->username}}</button>
+                    </x-slot>
+
+
+                    <x-slot name="slot">
+                        @can('admin')
+                            <x-dropdown-item href="/admin/posts" :active="request()->is('admin/posts')">Dashboard</x-dropdown-item>
+                            <x-dropdown-item href="/admin/posts/create" :active="request()->is('admin/posts/create')">New Post</x-dropdown-item>
+                        @endcan
+                    </x-slot>
+
+                </x-dropdown>
 
                 <form action="/logout" method="POST" class="ml-6">
                     @csrf {{--//sache que le formulaire a été crée par lui--}}

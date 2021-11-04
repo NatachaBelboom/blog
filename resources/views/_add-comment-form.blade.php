@@ -11,22 +11,12 @@
 
             </header>
             <label for="body" class="block mb-6">Participate!</label>
-            <textarea
-                class="w-full text-sm focus:outline-none focus:ring "
-                id="body"
-                name="body"
-                rows="5"
-                placeholder="Write something"
-                required>
-                        {{old('body')}}
-            </textarea>
-            @error('body')
-                <p class=" text-xs">{{$message}}</p>
-            @enderror
+            <x-form.textarea name="body"/>
+            <x-form.error name="body" />
             <div>
-                <x-submit-button>
+                <x-form.button>
                     Publish
-                </x-submit-button>
+                </x-form.button>
             </div>
         </form>
     </x-panel>
