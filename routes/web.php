@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SessionController;
 use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\PostCommentController;
@@ -66,6 +67,8 @@ Route::middleware('admins')->group(function(){
     Route::patch('/admin/posts/{post}', [AdminPostController::class, 'update']);
     Route::delete('/admin/posts/{post}', [AdminPostController::class, 'destroy']);
 });
+
+
 
 
 

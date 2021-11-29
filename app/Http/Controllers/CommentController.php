@@ -10,4 +10,9 @@ class CommentController extends Controller
     {
         return ;
     }
+
+    public function store()
+    {
+        $comment = new \App\Models\Comment();
+    }
 }
